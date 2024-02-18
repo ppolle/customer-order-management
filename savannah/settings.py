@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     #third part apps
     'rest_framework',
     #local apps
-    'savannah.apps.customers'
+    'savannah.apps.customers',
+    'savannah.apps.orders'
 ]
 
 MIDDLEWARE = [
