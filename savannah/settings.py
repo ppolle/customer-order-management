@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #third part apps
     'rest_framework',
+    'coverage',
     #local apps
     'savannah.apps.customers',
     'savannah.apps.orders',

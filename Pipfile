@@ -6,9 +6,10 @@ name = "pypi"
 [packages]
 django = "==2.2.*"
 python-decouple = "*"
-psycopg2-binary = "*"
+psycopg2-binary = "==2.8.6"
 djangorestframework = "*"
 africastalking = "*"
+coverage = "*"
 
 [dev-packages]
 

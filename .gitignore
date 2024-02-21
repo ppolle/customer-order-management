@@ -4,4 +4,4 @@ env/
 .env
 staticfiles/
 postgres-data/
-mydatabase
+.coverage

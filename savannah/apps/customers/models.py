@@ -10,14 +10,14 @@ class Customer(models.Model):
     """
     user  = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    customer_code = models.CharField(max_length=255)
+    customer_code = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.name
     
-    def save(self):
+    def save(self, *args, **kwargs):
         super(Customer, self).save()
         customer_code = f"#CU{self.id}"
         self.customer_code = customer_code
-        self.save()
+
     
