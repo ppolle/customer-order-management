@@ -1,4 +1,3 @@
-from typing import Iterable
 from django.db import models
 from savannah.apps.customers.models import Customer
 # Create your models here.
@@ -21,3 +20,4 @@ class Order(models.Model):
         order_number = f"#ON{self.id}"
         self.order_number = order_number
         self.save()
+

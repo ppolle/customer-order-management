@@ -8,6 +8,7 @@ django = "==2.2.*"
 python-decouple = "*"
 psycopg2-binary = "*"
 djangorestframework = "*"
+africastalking = "*"
 
 [dev-packages]
 

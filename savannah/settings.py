@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     #local apps
     'savannah.apps.customers',
-    'savannah.apps.orders'
+    'savannah.apps.orders',
+    'savannah.apps.notifications'
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#Africas Talking
+AT_API_KEY = config('AT_API_KEY')
+AT_USERNAME = config('AT_USERNAME')
+AT_SENDER = config('AT_SENDER')
