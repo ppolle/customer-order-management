@@ -2,12 +2,12 @@ version: '3'
 
 services:
   web:
-    build: .
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    build: 
+      context: .
+      dockerfile: Dockerfile.prod
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn savannah.wsgi:application --bind 0.0.0.0:8000"
     container_name: savanna_web_service
     env_file: .env
-    volumes:
-      - .:/usr/src/savanna
     ports:
       - "8000:8000"
     depends_on:

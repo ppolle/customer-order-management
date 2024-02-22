@@ -26,6 +26,18 @@ FROM python-deps AS runtime
 COPY --from=python-deps /.venv /.venv
 ENV PATH="/.venv/bin:$PATH"
 
-WORKDIR /usr/src/savanna
+RUN mkdir -p /home/savannah
+RUN addgroup --system savannah && adduser --system --group savannah
 
-COPY . .
+ENV HOME=/home/savannah
+ENV APP_HOME=/home/savannah/web
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
+COPY . $APP_HOME
+
+# chown all the files to the savannah user
+RUN chown -R savannah:savannah $APP_HOME
+
+# change to the savannah user
+USER savannah
