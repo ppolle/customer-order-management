@@ -32,6 +32,7 @@ RUN addgroup --system savannah && adduser --system --group savannah
 ENV HOME=/home/savannah
 ENV APP_HOME=/home/savannah/web
 RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/staticfiles
 WORKDIR $APP_HOME
 
 COPY . $APP_HOME

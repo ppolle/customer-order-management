@@ -5,11 +5,13 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile.prod
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn savannah.wsgi:application --bind 0.0.0.0:8000"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --no-input --clear && gunicorn savannah.wsgi:application --bind 0.0.0.0:8000"
     container_name: savanna_web_service
+    volumes:
+          - static_volume:/home/app/web/staticfiles
     env_file: .env
-    ports:
-      - "8000:8000"
+    expose:
+      - 8000
     depends_on:
       - postgres-db
 
@@ -24,5 +26,15 @@ services:
     ports:
       - "5432:5432"
 
+  nginx:
+    build: ./nginx
+    volumes:
+          - static_volume:/home/app/web/staticfiles
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+
 volumes: 
   postgres-data:
+  static_volume:
