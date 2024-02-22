@@ -25,7 +25,3 @@ def create_notification(sender, instance, created, **kwargs):
                                     status=response_data['status'],
                                     phone_number=response_data['number'],
                                     message_id=response_data['messageId'])
-        
-
-{'SMSMessageData': {'Message': 'Sent to 1/1 Total Cost: KES 0.8000 Message parts: 1',
-                    'Recipients': [{'cost': 'KES 0.8000', 'messageId': 'ATXid_660c44371ac362e12eb7721416a0af98', 'number': '+254736492933', 'status': 'Success', 'statusCode': 101}]}}
