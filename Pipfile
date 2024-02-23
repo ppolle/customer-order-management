@@ -10,6 +10,7 @@ psycopg2-binary = "==2.8.6"
 djangorestframework = "*"
 africastalking = "*"
 coverage = "*"
+gunicorn = "*"
 
 [dev-packages]
 
