@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     #local apps
     'savannah.apps.customers',
     'savannah.apps.orders',
-    'savannah.apps.notifications'
+    'savannah.apps.notifications',
+    'savannah.apps.users'
 ]
 
 MIDDLEWARE = [
