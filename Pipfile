@@ -11,6 +11,7 @@ djangorestframework = "*"
 africastalking = "*"
 coverage = "*"
 gunicorn = "*"
+django-allauth = "*"
 
 [dev-packages]
 

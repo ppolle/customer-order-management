@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     #third part apps
     'rest_framework',
     'coverage',
+    'allauth',
+    'allauth.account',
     #local apps
     'savannah.apps.customers',
     'savannah.apps.orders',
@@ -136,3 +138,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 AT_API_KEY = config('AT_API_KEY')
 AT_USERNAME = config('AT_USERNAME')
 AT_SENDER = config('AT_SENDER')
+
+AUTH_USER_MODEL = "users.User"
