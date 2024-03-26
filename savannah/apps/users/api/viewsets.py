@@ -1,9 +1,24 @@
-from django.contrib.auth import get_user_model
-from rest_framework.viewsets import ModelViewSet
-from savannah.apps.users.api.serializers import SignupSerializer
+from django.http import Http404
+from rest_framework import status
+from django.shortcuts import redirect
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from savannah.apps.users.authentication import GoogleAuth
 
-User = get_user_model()
 
-class SignupViewSet(ModelViewSet):
-    serializer_class = SignupSerializer
-    http_method_names = ["post"]
+class AuthenticateView(APIView):
+    """
+    Initialize Google oauth Authorization
+    """
+    def get(self, request, format=None):
+        google_auth = GoogleAuth()
+        authorization_url, state = google_auth.generate_authorization_url()
+        request.session["google_oauth2_state"] = state
+
+        return redirect(authorization_url)
+        
+class CallbackView(APIView):
+    """
+    Handle Google OAuth Callback 
+    """
+    pass
