@@ -20,10 +20,13 @@ class SendSMS():
     
     def send(self):
         sms = self.initialize()
-        recipients = ["+254736492933"] #swap this for actual user's phone number
-        message = f"Hi {self.order.customer}, a new order has been placed on our platform. Order number is: {self.order.order_number}" #complete this
-        sender = self.sender
-        response = sms.send(message, recipients, sender)
+        phone_number = self.order.customer.user.phone_number
+        if phone_number is not None or phone_number != '':
+         recipients = [phone_number] #swap this for actual user's phone number
+         message = f"Hi {self.order.customer}, a new order has been placed on our platform. Order number is: {self.order.order_number}" #complete this
+         sender = self.sender
+         response = sms.send(message, recipients, sender)
+         return {"status":"success","detail":response}
 
-        return response
+        return {"status":"fail"}
 
