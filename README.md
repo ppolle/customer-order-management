@@ -4,10 +4,13 @@ This is a repository that demonstrates managing customer orders via a Django res
 
 ### API Endpoints
 
+1. **api/v1/authenticate/** Methods allowed are: GET
+1. **api/v1/user/** Methods allowed are: GET, PUT, PATCH
+1. **api/v1/logout/** Methods allowed are: GET
 1. **api/v1/customers/** Methods allowed are: GET, POST
-2. **api/v1/customers/{id}** Methods allowed are: GET, PUT, PATCH, DELETE
+2. **api/v1/customers/{id}/** Methods allowed are: GET, PUT, PATCH, DELETE
 3. **api/v1/orders/** Methods allowed are: GET, POST
-4. **api/v1/orders/{id}** Methods allowed are: GET, PUT, PATCH, DELETE
+4. **api/v1/orders/{id}/** Methods allowed are: GET, PUT, PATCH, DELETE
 
 # Development
 
