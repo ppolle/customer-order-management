@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #third part apps
     'rest_framework',
+    'rest_framework.authtoken',
     'coverage',
     'allauth',
     'allauth.account',
@@ -146,3 +147,7 @@ GOOGLE_CLIENT_ID=config('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
 GOOGLE_PROJECT_ID = config('GOOGLE_PROJECT_ID')
 GOOGLE_AUTH_REDIRECT_URIS = config('GOOGLE_AUTH_REDIRECT_URIS')
+GOOGLE_AUTH_REDIRECT_URI = config('GOOGLE_AUTH_REDIRECT_URI')
+
+if DEBUG:
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
