@@ -1,11 +1,16 @@
 from django.http import Http404
 from rest_framework import status
 from django.shortcuts import redirect
+from .serializers import UserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.contrib.auth import get_user_model
+from rest_framework.authtoken.models import Token
 from rest_framework.serializers import ValidationError
 from savannah.apps.users.authentication import GoogleAuth
+from rest_framework import viewsets, permissions, authentication
 
+User = get_user_model()
 
 class AuthenticateView(APIView):
     """
@@ -36,5 +41,41 @@ class CallbackView(APIView):
         
         user_info = google_auth.get_user_info(tokens.token)
         authenticate = google_auth.authenticate_user(user_info)
-
         return Response(authenticate)
+    
+class UserViewSet(APIView):
+    """
+    Get and Update User Data
+    """
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk=None):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+    
+    def put(self, request, pk=None):
+        serializer = UserSerializer(request.user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk=None):
+        serializer = UserSerializer(request.user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class LogoutViewSet(APIView):
+    """
+    Get and Update User Data
+    """
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk=None):
+        Token.objects.get(user=request.user).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
