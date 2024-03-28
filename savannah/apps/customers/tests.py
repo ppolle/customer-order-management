@@ -1,16 +1,20 @@
 from django.test import TestCase
-from rest_framework.test import APIClient, APITestCase
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from rest_framework.authtoken.models import Token
 from savannah.apps.customers.models import Customer
+from rest_framework.test import APIClient, APITestCase
+
+User = get_user_model()
 
 # Create your tests here.
-
 class CustomerApiTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username='test_user',
             email='test.user@gmail.com',
             password='testPASSWORD1234')
+        self.token, created = Token.objects.get_or_create(user=self.user)
+        
         
         self.customer = Customer.objects.create(name="John Doe",
                                                 user=self.user)
@@ -21,7 +25,8 @@ class CustomerApiTests(TestCase):
         url = '/api/v1/customers/'
         data = {'user':self.user.id,
 				'name':'John Doe'}
-        response = self.client.post(url, data)
+        response = self.client.post(
+            url, data, HTTP_AUTHORIZATION='Token ' + str(self.token))
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Customer.objects.all().count(), 2)
@@ -30,7 +35,8 @@ class CustomerApiTests(TestCase):
     def test_customer_object_patch(self):
         url = f'/api/v1/customers/{self.customer.id}/'
         data = {'name': 'Jane Doe'}
-        response = self.client.patch(url, data)
+        response = self.client.patch(
+            url, data, HTTP_AUTHORIZATION='Token ' + str(self.token))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['name'], 'Jane Doe')
@@ -39,14 +45,16 @@ class CustomerApiTests(TestCase):
         url = f'/api/v1/customers/{self.customer.id}/'
         data = {'name': 'Pinky Ponky',
                 'user':self.user.id}
-        response = self.client.put(url, data)
+        response = self.client.put(
+            url, data, HTTP_AUTHORIZATION='Token ' + str(self.token))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['name'], 'Pinky Ponky')
 
     def test_customer_object_deletion(self):
         url = f'/api/v1/customers/{self.customer.id}/'
-        response = self.client.delete(url)
+        response = self.client.delete(
+            url, HTTP_AUTHORIZATION='Token ' + str(self.token))
 
         self.assertEqual(response.status_code, 204)
 
@@ -54,7 +62,8 @@ class CustomerApiTests(TestCase):
         url = '/api/v1/customers/'
         data = {'user': self.user.id,
                 'name': 'John Doe'}
-        response = self.client.post(url, data)
+        response = self.client.post(
+            url, data, HTTP_AUTHORIZATION='Token ' + str(self.token))
 
         self.assertEqual(response.status_code, 201)
         self.assertIn('#CU', response.data['customer_code'])

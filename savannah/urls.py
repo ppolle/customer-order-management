@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('savannah.apps.customers.api.urls')),
     path('api/v1/', include('savannah.apps.orders.api.urls')),
+    path('api/v1/', include('savannah.apps.users.api.urls')),
 ]

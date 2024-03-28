@@ -20,8 +20,9 @@ def create_notification(sender, instance, created, **kwargs):
     if created:
         sms = SendSMS(instance)
         response = sms.send()
-        response_data = response['SMSMessageData']['Recipients'][0]
-        Notification.objects.create(order=instance,
-                                    status=response_data['status'],
-                                    phone_number=response_data['number'],
-                                    message_id=response_data['messageId'])
+        if response['status'] == 'success':
+            response_data = response['detail']['SMSMessageData']['Recipients'][0]
+            Notification.objects.create(order=instance,
+                                        status=response_data['status'],
+                                        phone_number=response_data['number'],
+                                        message_id=response_data['messageId'])

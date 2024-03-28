@@ -1,11 +1,13 @@
 from django.test import TestCase
 from rest_framework.test import APIClient
-from django.contrib.auth.models import User
 from savannah.apps.orders.models import Order
+from django.contrib.auth import get_user_model
+from rest_framework.authtoken.models import Token
 from savannah.apps.customers.models import Customer
 from savannah.apps.notifications.models import Notification
-# Create your tests here.
 
+User = get_user_model()
+# Create your tests here.
 
 class OrderApiTests(TestCase):
     def setUp(self):
@@ -13,6 +15,7 @@ class OrderApiTests(TestCase):
             username='test_user',
             email='test.user@gmail.com',
             password='testPASSWORD1234')
+        self.token, created = Token.objects.get_or_create(user=self.user)
 
         self.customer = Customer.objects.create(name="John Doe",
                                                 user=self.user)
@@ -28,7 +31,8 @@ class OrderApiTests(TestCase):
         data = {'customer': self.customer.id,
                 'item': 'Sued Shoes',
                 'amount':2}
-        response = self.client.post(url, data)
+        response = self.client.post(
+            url, data, HTTP_AUTHORIZATION='Token ' + str(self.token))
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Order.objects.all().count(), 2)
@@ -42,7 +46,8 @@ class OrderApiTests(TestCase):
                 'item': 'Jeans',
                 'amount': 1}
         
-        response = self.client.post(url, data)
+        response = self.client.post(
+            url, data, HTTP_AUTHORIZATION='Token ' + str(self.token))
         order = Order.objects.get(id=response.data['id'])
         updated_notification_count = Notification.objects.all().count()
 
@@ -53,7 +58,8 @@ class OrderApiTests(TestCase):
     def test_order_object_patch(self):
         url = f'/api/v1/orders/{self.order.id}/'
         data = {'amount': 3}
-        response = self.client.patch(url, data)
+        response = self.client.patch(
+            url, data, HTTP_AUTHORIZATION='Token ' + str(self.token))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['amount'], 3)
@@ -63,14 +69,16 @@ class OrderApiTests(TestCase):
         data = {'amount': 2,
                 'customer': self.customer.id,
                 'item':'Sued Shoes'}
-        response = self.client.put(url, data)
+        response = self.client.put(
+            url, data, HTTP_AUTHORIZATION='Token ' + str(self.token))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['amount'], 2)
 
     def test_order_object_deletion(self):
         url = f'/api/v1/orders/{self.order.id}/'
-        response = self.client.delete(url)
+        response = self.client.delete(
+            url, HTTP_AUTHORIZATION='Token ' + str(self.token))
 
         self.assertEqual(response.status_code, 204)
 
@@ -79,7 +87,8 @@ class OrderApiTests(TestCase):
         data = {'customer': self.customer.id,
                 'item': 'Taste Afrique',
                 'amount': 5}
-        response = self.client.post(url, data)
+        response = self.client.post(
+            url, data, HTTP_AUTHORIZATION='Token ' + str(self.token))
 
         self.assertEqual(response.status_code, 201)
         self.assertIn('#ON', response.data['order_number'])

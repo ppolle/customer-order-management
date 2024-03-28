@@ -39,11 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #third part apps
     'rest_framework',
+    'rest_framework.authtoken',
     'coverage',
+    'allauth',
+    'allauth.account',
     #local apps
     'savannah.apps.customers',
     'savannah.apps.orders',
-    'savannah.apps.notifications'
+    'savannah.apps.notifications',
+    'savannah.apps.users'
 ]
 
 MIDDLEWARE = [
@@ -135,3 +139,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 AT_API_KEY = config('AT_API_KEY')
 AT_USERNAME = config('AT_USERNAME')
 AT_SENDER = config('AT_SENDER')
+
+AUTH_USER_MODEL = "users.User"
+
+#Google Auth
+GOOGLE_CLIENT_ID=config('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
+GOOGLE_PROJECT_ID = config('GOOGLE_PROJECT_ID')
+GOOGLE_AUTH_REDIRECT_URIS = config('GOOGLE_AUTH_REDIRECT_URIS')
+GOOGLE_AUTH_REDIRECT_URI = config('GOOGLE_AUTH_REDIRECT_URI')
+
+if DEBUG:
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
